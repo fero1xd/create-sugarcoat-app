@@ -25,3 +25,16 @@ export const getPackageManagers = async () => {
 
   return available;
 };
+
+export const TEMPLATE_DIR = path.resolve("template");
+
+export type Answers = {
+  location: string;
+  packageManager: PM;
+  serverFramework: "express" | "hono";
+  includeDatabase: boolean;
+  database: string | undefined;
+  orm: string | undefined;
+  includeAuth: boolean;
+  authProvider: string | undefined;
+};

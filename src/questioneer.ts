@@ -1,5 +1,5 @@
 import * as p from "@clack/prompts";
-import { getPackageManagers } from "./utils";
+import { getPackageManagers, type Answers } from "./utils";
 import type { PM } from "detect-package-manager";
 
 export const runQuestioneer = async () => {
@@ -66,7 +66,7 @@ export const runQuestioneer = async () => {
             },
             {
               label: "Vercel PG",
-              value: "vercelPg",
+              value: "vercel",
             },
           ],
         });
@@ -127,14 +127,5 @@ export const runQuestioneer = async () => {
     }
   );
 
-  return group as {
-    location: string;
-    packageManager: PM;
-    serverFramework: "express" | "hono";
-    includeDatabase: boolean;
-    database: string | undefined;
-    orm: string | undefined;
-    includeAuth: boolean;
-    authProvider: string | undefined;
-  };
+  return group as Answers;
 };

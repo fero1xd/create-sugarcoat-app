@@ -2,12 +2,13 @@
   "name": "create-modern-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/bin.js",
+  "exports": "./dist/bin.js",
+  "type": "module",
   "bin": {
-    "create-modern-backend": "dist/bin.js"
+    "create-modern-backend": "./dist/bin.js"
   },
   "scripts": {
-    "build": "esbuild --bundle src/index.ts --outfile=dist/bin.js --packages=external --platform=node",
+    "build": "esbuild --bundle src/index.ts --outfile=dist/bin.js --packages=external --format=esm --target=esnext",
     "dev": "tsx src/index.ts"
   },
   "keywords": [],

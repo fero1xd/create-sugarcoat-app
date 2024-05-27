@@ -1,6 +1,5 @@
 import type { PM } from "detect-package-manager";
 import { execa } from "execa";
-import { resolve } from "path";
 import ora from "ora";
 
 export const installPackages = async (location: string, pm: PM) => {

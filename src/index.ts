@@ -3,15 +3,15 @@
 import { renderTitle } from "./utils";
 import { runQuestioneer } from "./questioneer";
 import { createProjectDir } from "./steps/dir";
-import { installPackages } from "./steps/packages";
 
 const main = async () => {
   renderTitle();
-  const p = await runQuestioneer();
-  createProjectDir(p.location);
+  const answers = await runQuestioneer();
 
-  await installPackages(p.location, p.packageManager);
+  // Copies common files
+  await createProjectDir(answers);
+
+  // installPackages(p.location, p.packageManager);
   // console.log(p);
 };
-
 main();
