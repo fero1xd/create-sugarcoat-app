@@ -38,3 +38,18 @@ export type Answers = {
   includeAuth: boolean;
   authProvider: string | undefined;
 };
+
+export const prismaDir = path.join(
+  TEMPLATE_DIR,
+  "extras",
+  "src",
+  "db",
+  "prisma"
+);
+export const drizzleDir = path.join(
+  TEMPLATE_DIR,
+  "extras",
+  "src",
+  "db",
+  "drizzle"
+);

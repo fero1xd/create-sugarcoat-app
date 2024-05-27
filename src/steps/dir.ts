@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 import { spinner } from "@clack/prompts";
-import { TEMPLATE_DIR, type Answers } from "../utils";
+import { drizzleDir, prismaDir, TEMPLATE_DIR, type Answers } from "../utils";
 
 export const createProjectDir = async (answers: Answers) => {
   const { location, serverFramework } = answers;
@@ -23,9 +23,7 @@ export const createProjectDir = async (answers: Answers) => {
 
   await fs.copy(path.resolve("template", "common"), absolutePath);
 
-  loader.message("Moving root file");
   moveServerIndex(serverFramework, absolutePath, answers.orm);
-  loader.message("Successfuly moved root file");
 
   if (answers.orm && answers.includeDatabase) {
     await makeDatabaseDir(answers.database as any, answers.orm, absolutePath);
@@ -56,34 +54,47 @@ const moveServerIndex = (
   }
 };
 
-const dbDir = path.join(TEMPLATE_DIR, "extras", "src", "db");
-const drizzleDir = path.join(dbDir, "drizzle");
-
 const map = {
-  neon: {
-    drizzle: { index: path.join(drizzleDir, "pg") },
-    prisma: path.join(drizzleDir, "prisma", ""),
-  },
-  prisma: {
-    neon: path.join(dbDir, "prisma", "schema.pg.prisma"),
-    planetscale: path.join(dbDir, "prisma", "schema.mysql.prisma"),
-    supabase: path.join(dbDir, "prisma", "schema.pg.prisma"),
-    turso: path.join(dbDir, "prisma", "schema.turso.prisma"),
-    vercel: path.join(dbDir, "prisma", "schema.pg.prisma"),
-  },
+  neon: "pg",
+  planetscale: "mysql",
+  supabase: "pg",
+  vercel: "pg",
+  turso: "sqlite",
 };
 
 export const makeDatabaseDir = async (
-  dbProvider: keyof (typeof map)["prisma"],
+  dbProvider: keyof typeof map,
   orm: string,
   location: string
 ) => {
-  if (orm === "prisma") {
-    const schema = map.prisma[dbProvider];
-    if (!schema) {
-      return console.log("no prisma schema found for", dbProvider);
-    }
+  const type = map[dbProvider] as "pg" | "mysql" | "sqlite";
+  if (!type) {
+    return console.log("nothing found for", dbProvider);
+  }
+  const dbFile = path.join(location, "src", "db", "index.ts");
 
-    await fs.copy(schema, path.join(location, "prisma", "schema.prisma"));
+  if (orm === "prisma") {
+    // Copies schema
+    await fs.copy(
+      path.join(prismaDir, `schema.${type}.prisma`),
+      path.join(location, "prisma", "schema.prisma")
+    );
+
+    // Copies db connection
+    await fs.copy(
+      path.join(
+        prismaDir,
+        dbProvider === "turso" ? `prisma-libsql.ts` : "prisma.ts"
+      ),
+      dbFile
+    );
+  } else if (orm === "drizzle") {
+    // Copies db conn
+    await fs.copy(
+      path.join(drizzleDir, type, `${dbProvider}.ts`),
+      path.join(location, "src", "db", "index.ts")
+    );
+    // Copies schema
+    await fs.copy(path.join(drizzleDir, type, "schema.ts"), dbFile);
   }
 };

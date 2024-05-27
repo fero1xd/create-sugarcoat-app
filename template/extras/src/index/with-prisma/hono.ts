@@ -1,9 +1,8 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "./db";
 
 const app = new Hono();
-const prisma = new PrismaClient();
 
 app.get("/", async (c) => {
   const users = await prisma.user.findMany();
