@@ -28,13 +28,22 @@ export const getPackageManagers = async () => {
 
 export const TEMPLATE_DIR = path.resolve("template");
 
+export type DatbaseProviders =
+  | "neon"
+  | "vercel"
+  | "supabase"
+  | "turso"
+  | "planetscale";
+
+export type AvailableOrm = "typeorm" | "prisma" | "drizzle";
+
 export type Answers = {
   location: string;
   packageManager: PM;
   serverFramework: "express" | "hono";
   includeDatabase: boolean;
-  database: string | undefined;
-  orm: string | undefined;
+  database: DatbaseProviders | undefined;
+  orm: AvailableOrm | undefined;
   includeAuth: boolean;
   authProvider: string | undefined;
 };
@@ -52,4 +61,11 @@ export const drizzleDir = path.join(
   "src",
   "db",
   "drizzle"
+);
+export const typeormDir = path.join(
+  TEMPLATE_DIR,
+  "extras",
+  "src",
+  "db",
+  "typeorm"
 );

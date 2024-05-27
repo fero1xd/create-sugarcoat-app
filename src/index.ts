@@ -2,7 +2,7 @@
 
 import { renderTitle } from "./utils";
 import { runQuestioneer } from "./questioneer";
-import { createProjectDir } from "./steps/dir";
+import { createProjectDir } from "./steps/dirs";
 
 const main = async () => {
   renderTitle();

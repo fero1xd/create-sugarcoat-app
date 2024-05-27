@@ -71,25 +71,32 @@ export const runQuestioneer = async () => {
           ],
         });
       },
-      orm: ({ results: { includeDatabase } }) => {
+      orm: ({ results: { includeDatabase, database } }) => {
         if (!includeDatabase) return;
+
+        const options = [
+          {
+            label: "Drizzle",
+            value: "drizzle",
+          },
+          {
+            label: "Prisma",
+            value: "prisma",
+          },
+        ];
+
+        if (database !== "turso") {
+          // Will have to look into libsql support in typeorm
+          options.push({
+            label: "Typeorm",
+            value: "typeorm",
+          });
+        }
+
         return p.select({
           message: "What database orm do you want to use?",
           initialValue: "drizzle",
-          options: [
-            {
-              label: "Drizzle",
-              value: "drizzle",
-            },
-            {
-              label: "Prisma",
-              value: "prisma",
-            },
-            {
-              label: "Typeorm",
-              value: "typeorm",
-            },
-          ],
+          options,
         });
       },
       includeAuth: () =>
