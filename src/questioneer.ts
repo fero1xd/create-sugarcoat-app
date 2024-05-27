@@ -1,5 +1,6 @@
 import * as p from "@clack/prompts";
 import { getPackageManagers } from "./utils";
+import type { PM } from "detect-package-manager";
 
 export const runQuestioneer = async () => {
   const pms = await getPackageManagers();
@@ -38,12 +39,10 @@ export const runQuestioneer = async () => {
             },
           ],
         }),
-
       includeDatabase: () =>
         p.confirm({
           message: "Do you want to use a database?",
         }),
-
       database: ({ results: { includeDatabase } }) => {
         if (!includeDatabase) return;
         return p.select({
@@ -72,7 +71,6 @@ export const runQuestioneer = async () => {
           ],
         });
       },
-
       orm: ({ results: { includeDatabase } }) => {
         if (!includeDatabase) return;
         return p.select({
@@ -94,12 +92,49 @@ export const runQuestioneer = async () => {
           ],
         });
       },
+      includeAuth: () =>
+        p.confirm({
+          message: "Do you want to add authentication to your api?",
+        }),
+      authProvider: ({ results: { includeAuth, includeDatabase } }) => {
+        if (!includeAuth) return;
+        const options = [
+          {
+            label: "Clerk",
+            value: "clerk",
+          },
+          {
+            label: "Kinde",
+            value: "kinde",
+          },
+        ];
+
+        if (includeDatabase) {
+          options.unshift({
+            label: "Lucia",
+            value: "lucia",
+          });
+        }
+
+        return p.select({
+          message: "What auth solution do you want to use?",
+          options,
+        });
+      },
     },
     {
       onCancel: () => process.exit(1),
     }
   );
 
-  p.outro("Thank you for your patience :)");
-  console.log(group);
+  return group as {
+    location: string;
+    packageManager: PM;
+    serverFramework: "express" | "hono";
+    includeDatabase: boolean;
+    database: string | undefined;
+    orm: string | undefined;
+    includeAuth: boolean;
+    authProvider: string | undefined;
+  };
 };

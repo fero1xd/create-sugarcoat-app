@@ -7,20 +7,26 @@
     "create-modern-backend": "dist/bin.js"
   },
   "scripts": {
-    "build": "esbuild --bundle src/index.ts --outfile=dist/bin.js --packages=external --platform=node"
+    "build": "esbuild --bundle src/index.ts --outfile=dist/bin.js --packages=external --platform=node",
+    "dev": "tsx src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@total-typescript/tsconfig": "^1.0.4",
+    "@types/fs-extra": "^11.0.4",
     "@types/gradient-string": "^1.1.6",
     "@types/node": "^20.12.12",
-    "esbuild": "^0.21.4"
+    "esbuild": "^0.21.4",
+    "tsx": "^4.11.0"
   },
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "detect-package-manager": "^3.0.2",
-    "gradient-string": "^2.0.2"
+    "execa": "^9.1.0",
+    "fs-extra": "^11.2.0",
+    "gradient-string": "^2.0.2",
+    "ora": "^8.0.1"
   }
 }

@@ -3,7 +3,7 @@ import { readFileSync } from "fs";
 import gradient from "gradient-string";
 import path from "path";
 
-export const art = readFileSync(path.join(__dirname, "art.txt"), {
+export const art = readFileSync(path.resolve("resources", "art.txt"), {
   encoding: "utf-8",
 });
 
