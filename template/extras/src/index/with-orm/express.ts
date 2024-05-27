@@ -1,10 +1,10 @@
 import express from "express";
-import { prisma } from "./db";
+import { getAllUsers } from "./db/operations";
 
 const app = express();
 
 app.get("/", async (req, res) => {
-  const users = await prisma.user.findMany();
+  const users = await getAllUsers();
   res.json({
     message: "Hello World",
     users,

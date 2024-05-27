@@ -1,11 +1,10 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { prisma } from "./db";
+import { getAllUsers } from "./db/operations";
 
 const app = new Hono();
-
 app.get("/", async (c) => {
-  const users = await prisma.user.findMany();
+  const users = await getAllUsers();
   return c.json({
     message: "Hello World",
     users,

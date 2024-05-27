@@ -44,7 +44,7 @@ const moveServerIndex = (
         "extras",
         "src",
         "index",
-        orm ? `with-${orm}` : "",
+        orm ? "with-orm" : "",
         `${framework.toLocaleLowerCase()}.ts`
       ),
       path.join(location, "src", "index.ts")
@@ -72,6 +72,7 @@ export const makeDatabaseDir = async (
     return console.log("nothing found for", dbProvider);
   }
   const dbFile = path.join(location, "src", "db", "index.ts");
+  const opsFile = path.join(location, "src", "db", "operations.ts");
 
   if (orm === "prisma") {
     // Copies schema
@@ -79,6 +80,9 @@ export const makeDatabaseDir = async (
       path.join(prismaDir, `schema.${type}.prisma`),
       path.join(location, "prisma", "schema.prisma")
     );
+
+    // Copies operations.ts
+    await fs.copy(path.join(prismaDir, `operations.ts`), opsFile);
 
     // Copies db connection
     await fs.copy(
@@ -94,7 +98,14 @@ export const makeDatabaseDir = async (
       path.join(drizzleDir, type, `${dbProvider}.ts`),
       path.join(location, "src", "db", "index.ts")
     );
+
+    // Copies operations.ts
+    await fs.copy(path.join(drizzleDir, `operations.ts`), opsFile);
+
     // Copies schema
-    await fs.copy(path.join(drizzleDir, type, "schema.ts"), dbFile);
+    await fs.copy(
+      path.join(drizzleDir, type, "schema.ts"),
+      path.join(location, "src", "db", "schema.ts")
+    );
   }
 };
