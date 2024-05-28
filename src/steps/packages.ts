@@ -1,8 +1,11 @@
 import type { PM } from "detect-package-manager";
 import { execa } from "execa";
 import ora from "ora";
+import chalk from "chalk";
 
 export const installPackages = async (location: string, pm: PM) => {
+  console.log("");
+  console.log(chalk.hex("#00c0ff")("Installing dependencies"));
   const loader = ora("Installing packages with " + pm);
 
   try {
@@ -49,3 +52,5 @@ export const installPackages = async (location: string, pm: PM) => {
     loader.fail("Installing npm packages failed");
   }
 };
+
+export const addDependencies = () => {};

@@ -48,7 +48,7 @@ const moveServerIndex = (
         "src",
         "index",
         orm ? "with-orm" : "",
-        `${framework.toLocaleLowerCase()}.ts`
+        `${framework}.ts`
       ),
       path.join(location, "src", "index.ts")
     );
