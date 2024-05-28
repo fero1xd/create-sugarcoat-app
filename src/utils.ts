@@ -44,28 +44,10 @@ export type Answers = {
   includeDatabase: boolean;
   database: DatbaseProviders | undefined;
   orm: AvailableOrm | undefined;
-  includeAuth: boolean;
-  authProvider: string | undefined;
+  includeLucia: boolean | undefined;
 };
 
-export const prismaDir = path.join(
-  TEMPLATE_DIR,
-  "extras",
-  "src",
-  "db",
-  "prisma"
-);
-export const drizzleDir = path.join(
-  TEMPLATE_DIR,
-  "extras",
-  "src",
-  "db",
-  "drizzle"
-);
-export const typeormDir = path.join(
-  TEMPLATE_DIR,
-  "extras",
-  "src",
-  "db",
-  "typeorm"
-);
+const dbDir = path.join(TEMPLATE_DIR, "extras", "src", "db");
+export const prismaDir = path.join(dbDir, "prisma");
+export const drizzleDir = path.join(dbDir, "drizzle");
+export const typeormDir = path.join(dbDir, "typeorm");

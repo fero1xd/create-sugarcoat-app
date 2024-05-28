@@ -99,35 +99,12 @@ export const runQuestioneer = async () => {
           options,
         });
       },
-      includeAuth: () =>
-        p.confirm({
-          message: "Do you want to add authentication to your api?",
-        }),
-      authProvider: ({ results: { includeAuth, includeDatabase } }) => {
-        if (!includeAuth) return;
-        const options = [
-          {
-            label: "Clerk",
-            value: "clerk",
-          },
-          {
-            label: "Kinde",
-            value: "kinde",
-          },
-        ];
-
-        if (includeDatabase) {
-          options.unshift({
-            label: "Lucia",
-            value: "lucia",
-          });
-        }
-
-        return p.select({
-          message: "What auth solution do you want to use?",
-          options,
-        });
-      },
+      includeLucia: ({ results: { includeDatabase } }) =>
+        includeDatabase
+          ? p.confirm({
+              message: "Do you want to add lucia auth to your api?",
+            })
+          : undefined,
     },
     {
       onCancel: () => process.exit(1),
