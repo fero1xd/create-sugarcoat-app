@@ -5,7 +5,7 @@ import {
   prismaDir,
   typeormDir,
   type AvailableOrm,
-  type DatbaseProviders,
+  type DatabaseProviders,
 } from "../../utils";
 
 const map = {
@@ -14,7 +14,7 @@ const map = {
   supabase: "pg",
   vercel: "pg",
   turso: "sqlite",
-} as Record<DatbaseProviders, "pg" | "mysql" | "sqlite">;
+} as Record<DatabaseProviders, "pg" | "mysql" | "sqlite">;
 
 const dirMap = {
   drizzle: drizzleDir,
@@ -23,7 +23,7 @@ const dirMap = {
 };
 
 export const copyDatabaseDir = async (
-  dbProvider: DatbaseProviders,
+  dbProvider: DatabaseProviders,
   orm: AvailableOrm,
   location: string
 ) => {

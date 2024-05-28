@@ -1,16 +1,13 @@
 import path from "path";
 import fs from "fs-extra";
 import { spinner } from "@clack/prompts";
-import { TEMPLATE_DIR, type Answers } from "../../utils";
+import { getAbsolute, TEMPLATE_DIR, type Answers } from "../../utils";
 import { copyDatabaseDir } from "./copyDatabase";
 
 export const createProjectDir = async (answers: Answers) => {
   const { location, serverFramework, orm, database, includeDatabase } = answers;
 
-  let absolutePath = location;
-  if (!path.isAbsolute(location)) {
-    absolutePath = path.resolve(location);
-  }
+  const absolutePath = getAbsolute(location);
 
   const loader = spinner();
   loader.start("Creating your api");

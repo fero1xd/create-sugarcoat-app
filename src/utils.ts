@@ -28,7 +28,7 @@ export const getPackageManagers = async () => {
 
 export const TEMPLATE_DIR = path.resolve("template");
 
-export type DatbaseProviders =
+export type DatabaseProviders =
   | "neon"
   | "vercel"
   | "supabase"
@@ -42,7 +42,7 @@ export type Answers = {
   packageManager: PM;
   serverFramework: "express" | "hono";
   includeDatabase: boolean;
-  database: DatbaseProviders | undefined;
+  database: DatabaseProviders | undefined;
   orm: AvailableOrm | undefined;
   includeLucia: boolean | undefined;
 };
@@ -51,3 +51,11 @@ const dbDir = path.join(TEMPLATE_DIR, "extras", "src", "db");
 export const prismaDir = path.join(dbDir, "prisma");
 export const drizzleDir = path.join(dbDir, "drizzle");
 export const typeormDir = path.join(dbDir, "typeorm");
+
+export const getAbsolute = (location: string) => {
+  let absolutePath = location;
+  if (!path.isAbsolute(location)) {
+    absolutePath = path.resolve(location);
+  }
+  return absolutePath;
+};
