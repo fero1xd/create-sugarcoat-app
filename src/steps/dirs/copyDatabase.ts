@@ -1,6 +1,7 @@
 import fs from "fs-extra";
 import path from "path";
 import {
+  dbDir,
   drizzleDir,
   prismaDir,
   typeormDir,
@@ -22,6 +23,19 @@ const dirMap = {
   typeorm: typeormDir,
 };
 
+const scriptsMap = {
+  drizzle: {
+    "db:generate": "drizzle-kit generate",
+    "db:studio": "drizzle-kit studio",
+    "db:migrate": "drizzle-kit migrate",
+  },
+  prisma: {
+    "db:generate": "prisma migrate dev",
+    "db:migrate": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+  },
+};
+
 export const copyDatabaseDir = async (
   dbProvider: DatabaseProviders,
   orm: AvailableOrm,
@@ -31,10 +45,10 @@ export const copyDatabaseDir = async (
   if (!type) {
     return console.log("nothing found for", dbProvider);
   }
-  const dbDir = path.join(location, "src", "db");
+  const newDbDir = path.join(location, "src", "db");
 
-  const dbFile = path.join(dbDir, "index.ts");
-  const opsFile = path.join(dbDir, "operations.ts");
+  const dbFile = path.join(newDbDir, "index.ts");
+  const opsFile = path.join(newDbDir, "operations.ts");
 
   // Copies operations.ts
   await fs.copy(path.join(dirMap[orm], `operations.ts`), opsFile);
@@ -58,19 +72,49 @@ export const copyDatabaseDir = async (
     // Copies schema
     await fs.copy(
       path.join(drizzleDir, type, "schema.ts"),
-      path.join(dbDir, "schema.ts")
+      path.join(newDbDir, "schema.ts")
     );
     // Copies db conn
     await fs.copy(path.join(drizzleDir, type, `${dbProvider}.ts`), dbFile);
+
+    // Copy config
+    if (dbProvider !== "turso") {
+      await fs.copy(
+        path.join(dbDir, "config", `drizzle.config.${type}.ts`),
+        path.join(location, "drizzle.config.ts")
+      );
+    } else {
+      await fs.copy(
+        path.join(dbDir, "config", `drizzle.config.turso.ts`),
+        path.join(location, "drizzle.config.ts")
+      );
+    }
   } else if (orm === "typeorm") {
     // Turso not included in here
     // Copies entities
     await fs.copy(
       path.join(typeormDir, "schema.ts"),
-      path.join(dbDir, "schema.ts")
+      path.join(newDbDir, "schema.ts")
     );
 
     // Copies db conn
     await fs.copy(path.join(typeormDir, `index.${type}.ts`), dbFile);
   }
+
+  if (orm === "typeorm") return;
+
+  const scripts = scriptsMap[orm];
+  const packageJson = await fs.readJSONSync(
+    path.join(location, "package.json")
+  );
+  const prevScripts = packageJson.scripts as Record<string, string>;
+
+  packageJson.scripts = {
+    ...prevScripts,
+    ...scripts,
+  };
+
+  await fs.writeJsonSync(path.join(location, "package.json"), packageJson, {
+    spaces: 2,
+  });
 };

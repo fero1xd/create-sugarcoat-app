@@ -47,7 +47,7 @@ export type Answers = {
   includeLucia: boolean | undefined;
 };
 
-const dbDir = path.join(TEMPLATE_DIR, "extras", "src", "db");
+export const dbDir = path.join(TEMPLATE_DIR, "extras", "src", "db");
 export const prismaDir = path.join(dbDir, "prisma");
 export const drizzleDir = path.join(dbDir, "drizzle");
 export const typeormDir = path.join(dbDir, "typeorm");
