@@ -1,6 +1,6 @@
-import * as p from "@clack/prompts";
-import { getPackageManagers, type Answers } from "./utils";
-import type { PM } from "detect-package-manager";
+import * as p from '@clack/prompts';
+import { getPackageManagers, type Answers } from './utils';
+import type { PM } from 'detect-package-manager';
 
 export const runQuestioneer = async () => {
   const pms = await getPackageManagers();
@@ -9,64 +9,64 @@ export const runQuestioneer = async () => {
     {
       location: () =>
         p.text({
-          message: "Where do you want to create your api?",
-          placeholder: ".",
-          defaultValue: ".",
+          message: 'Where do you want to create your api?',
+          placeholder: '.',
+          defaultValue: '.',
           validate: (value) => {
-            if (!value) return "Please enter a path.";
-            if (value[0] !== ".") return "Please enter a relative path.";
+            if (!value) return 'Please enter a path.';
+            if (value[0] !== '.') return 'Please enter a relative path.';
           },
         }),
       packageManager: () =>
         p.select({
-          message: "What package manager do you want to use?",
-          initialValue: "npm",
+          message: 'What package manager do you want to use?',
+          initialValue: 'npm',
 
           options: pms.map((pm) => ({ label: pm, value: pm })),
         }),
       serverFramework: () =>
         p.select({
-          message: "What server framework do you want to use?",
-          initialValue: "hono",
+          message: 'What server framework do you want to use?',
+          initialValue: 'hono',
           options: [
             {
-              label: "Hono",
-              value: "hono",
+              label: 'Hono',
+              value: 'hono',
             },
             {
-              label: "Express",
-              value: "express",
+              label: 'Express',
+              value: 'express',
             },
           ],
         }),
       includeDatabase: () =>
         p.confirm({
-          message: "Do you want to use a database?",
+          message: 'Do you want to use a database?',
         }),
       database: ({ results: { includeDatabase } }) => {
         if (!includeDatabase) return;
         return p.select({
-          message: "What database provider you want to use?",
+          message: 'What database provider you want to use?',
           options: [
             {
-              label: "Neon",
-              value: "neon",
+              label: 'Neon',
+              value: 'neon',
             },
             {
-              label: "Planetscale",
-              value: "planetscale",
+              label: 'Planetscale',
+              value: 'planetscale',
             },
             {
-              label: "Supabase",
-              value: "supabase",
+              label: 'Supabase',
+              value: 'supabase',
             },
             {
-              label: "Turso",
-              value: "turso",
+              label: 'Turso',
+              value: 'turso',
             },
             {
-              label: "Vercel PG",
-              value: "vercel",
+              label: 'Vercel PG',
+              value: 'vercel',
             },
           ],
         });
@@ -76,33 +76,33 @@ export const runQuestioneer = async () => {
 
         const options = [
           {
-            label: "Drizzle",
-            value: "drizzle",
+            label: 'Drizzle',
+            value: 'drizzle',
           },
           {
-            label: "Prisma",
-            value: "prisma",
+            label: 'Prisma',
+            value: 'prisma',
           },
         ];
 
-        if (database !== "turso") {
+        if (database !== 'turso') {
           // Will have to look into libsql support in typeorm
           options.push({
-            label: "Typeorm",
-            value: "typeorm",
+            label: 'Typeorm',
+            value: 'typeorm',
           });
         }
 
         return p.select({
-          message: "What database orm do you want to use?",
-          initialValue: "drizzle",
+          message: 'What database orm do you want to use?',
+          initialValue: 'drizzle',
           options,
         });
       },
-      includeLucia: ({ results: { includeDatabase } }) =>
-        includeDatabase
+      includeLucia: ({ results: { includeDatabase, orm } }) =>
+        includeDatabase && orm !== 'typeorm'
           ? p.confirm({
-              message: "Do you want to add lucia auth to your api?",
+              message: 'Do you want to add lucia auth to your api?',
             })
           : undefined,
     },

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { renderTitle } from "./utils";
-import { runQuestioneer } from "./questioneer";
-import { createProjectDir } from "./steps/dirs";
-import { addDependencies } from "./steps/packages";
-import { outro } from "@clack/prompts";
-import chalk from "chalk";
+import { renderTitle } from './utils';
+import { runQuestioneer } from './questioneer';
+import { createProjectDir } from './steps/dirs';
+import { addDependencies } from './steps/packages';
+import { outro } from '@clack/prompts';
+import chalk from 'chalk';
 
 const main = async () => {
   renderTitle();
@@ -14,10 +14,8 @@ const main = async () => {
   // Copies common files
   await createProjectDir(answers);
 
-  // await installPackages(answers.location, answers.packageManager);
   await addDependencies(answers);
-  // console.log(p);
 
-  outro(chalk.hex("#dd2476")("Thank you for using create-modern-app"));
+  outro(chalk.hex('#dd2476')('Thank you for using create-modern-app'));
 };
 main();

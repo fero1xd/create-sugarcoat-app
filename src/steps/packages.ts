@@ -1,19 +1,19 @@
-import type { PM } from "detect-package-manager";
-import { execa } from "execa";
-import ora from "ora";
-import chalk from "chalk";
-import { getAbsolute, type Answers, type AvailableOrm } from "../utils";
+import type { PM } from 'detect-package-manager';
+import { execa } from 'execa';
+import ora from 'ora';
+import chalk from 'chalk';
+import { getAbsolute, type Answers, type AvailableOrm } from '../utils';
 
 const installPackages = async (location: string, pm: PM, ...args: string[]) => {
-  console.log("");
-  console.log(chalk.hex("#00c0ff")("Installing dependencies"));
-  const loader = ora("Installing packages with " + pm);
+  console.log('');
+  console.log(chalk.hex('#00c0ff')('Installing dependencies'));
+  const loader = ora('Installing packages with ' + pm);
 
   try {
-    if (pm === "npm") {
-      await execa("npm", ["install", ...args], {
+    if (pm === 'npm') {
+      await execa('npm', ['install', ...args], {
         cwd: location,
-        stderr: "inherit",
+        stderr: 'inherit',
       });
     } else {
       loader.start();
@@ -22,64 +22,70 @@ const installPackages = async (location: string, pm: PM, ...args: string[]) => {
         cwd: location,
       })`${pm} install ${[...args]}`.readable();
 
-      p.on("data", (data) => {
+      p.on('data', (data) => {
         const text = data.toString();
 
         switch (pm) {
-          case "pnpm":
-            if (text.includes("Progress")) {
-              loader.text = text.includes("|")
-                ? text.split(" | ")[1] ?? ""
+          case 'pnpm':
+            if (text.includes('Progress')) {
+              loader.text = text.includes('|')
+                ? text.split(' | ')[1] ?? ''
                 : text;
             }
 
             break;
 
-          case "yarn":
+          case 'yarn':
             loader.text = text;
             break;
         }
       });
 
       await new Promise((res) => {
-        p.on("close", res);
-        p.on("end", res);
+        p.on('close', res);
+        p.on('end', res);
       });
     }
 
     loader.succeed(`Installed all npm packages`);
   } catch (e) {
     console.log(e);
-    loader.fail("Installing npm packages failed");
+    loader.fail('Installing npm packages failed');
   }
 };
 
 const dependenciesMap = {
   serverFramework: {
-    express: ["express", "@types/express"],
-    hono: ["hono", "@hono/node-server"],
+    express: ['express', '@types/express'],
+    hono: ['hono', '@hono/node-server'],
+  },
+  lucia: {
+    base: ['lucia'],
+    drizzle: ['@lucia-auth/adapter-drizzle'],
+    prisma: ['@lucia-auth/adapter-prisma'],
+    typeorm: [],
   },
   orm: {
     drizzle: {
-      base: ["drizzle-orm", "drizzle-kit"],
-      neon: ["@neondatabase/serverless"],
-      vercel: ["@vercel/postgres"],
-      supabase: ["postgres"],
-      planetscale: ["@planetscale/database"],
-      turso: ["@libsql/client"],
+      base: ['drizzle-orm', 'drizzle-kit'],
+      neon: ['@neondatabase/serverless'],
+      vercel: ['@vercel/postgres'],
+      supabase: ['postgres'],
+      planetscale: ['@planetscale/database'],
+      turso: ['@libsql/client'],
     },
     prisma: {
-      base: ["@prisma/client"],
-      turso: ["@prisma/adapter-libsql", "@libsql/client"],
+      base: ['prisma', '@prisma/client'],
+      turso: ['@prisma/adapter-libsql', '@libsql/client'],
     },
     typeorm: {
-      base: ["typeorm", "reflect-metadata"],
-      neon: ["pg"],
-      vercel: ["pg"],
-      supabase: ["pg"],
-      planetscale: ["mysql"],
+      base: ['typeorm', 'reflect-metadata'],
+      neon: ['pg'],
+      vercel: ['pg'],
+      supabase: ['pg'],
+      planetscale: ['mysql'],
     },
-  } as Record<AvailableOrm, Record<"base" | (string & {}), string[]>>,
+  } as Record<AvailableOrm, Record<'base' | (string & {}), string[]>>,
 };
 
 export const addDependencies = async (answers: Answers) => {
@@ -89,7 +95,7 @@ export const addDependencies = async (answers: Answers) => {
     deps.add(d)
   );
 
-  const { orm, database, includeDatabase } = answers;
+  const { orm, database, includeDatabase, includeLucia } = answers;
   const location = getAbsolute(answers.location);
 
   if (!includeDatabase || !orm || !database) return;
@@ -99,8 +105,10 @@ export const addDependencies = async (answers: Answers) => {
   ormDeps.base.forEach((d) => deps.add(d));
   ormDeps[database]?.forEach((d) => deps.add(d));
 
-  // const packageFile = fs.readJSONSync(path.join(location, "package.json"));
-  // const packageDeps = packageFile.dependencies as Record<string, string>;
+  if (includeLucia) {
+    dependenciesMap.lucia.base.forEach((d) => deps.add(d));
+    dependenciesMap.lucia[orm].forEach((d) => deps.add(d));
+  }
 
   await installPackages(location, answers.packageManager, ...Array.from(deps));
 };
