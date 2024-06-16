@@ -52,7 +52,15 @@ export const copyDatabaseDir = async (
   const opsFile = path.join(newDbDir, 'operations.ts');
 
   // Copies operations.ts
-  await fs.copy(path.join(dirMap[orm], `operations.ts`), opsFile);
+  await fs.copy(
+    path.join(
+      dirMap[orm],
+      orm === 'typeorm'
+        ? `operations.ts`
+        : `operations${addAuth ? '-auth' : ''}.ts`
+    ),
+    opsFile
+  );
 
   if (orm === 'prisma') {
     // Copies schema

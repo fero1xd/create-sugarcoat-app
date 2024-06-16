@@ -1,7 +1,10 @@
 import express from 'express';
 import { getAllUsers } from './db/operations';
+import { createAuthRoutes } from '../routes';
 
 const app = express();
+
+app.use('/auth', createAuthRoutes());
 
 app.get('/', async (_req, res) => {
   const users = await getAllUsers();

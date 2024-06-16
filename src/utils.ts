@@ -52,6 +52,7 @@ export const prismaDir = path.join(dbDir, 'prisma');
 export const drizzleDir = path.join(dbDir, 'drizzle');
 export const typeormDir = path.join(dbDir, 'typeorm');
 export const luciaDir = path.join(dbDir, '..', 'auth');
+export const routesDir = path.join(TEMPLATE_DIR, 'extras', 'src', 'routes');
 
 export const getAbsolute = (location: string) => {
   let absolutePath = location;

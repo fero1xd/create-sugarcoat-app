@@ -30,7 +30,7 @@ export const createProjectDir = async (answers: Answers) => {
   await fs.copy(path.resolve('template', 'common'), absolutePath);
 
   // copies main index file
-  moveServerIndex(serverFramework, absolutePath, orm);
+  moveServerIndex(serverFramework, absolutePath, orm, includeLucia || false);
 
   // Add database Support
   if (orm && includeDatabase && database) {
@@ -45,7 +45,8 @@ export const createProjectDir = async (answers: Answers) => {
 const moveServerIndex = async (
   framework: 'express' | 'hono',
   location: string,
-  orm?: string
+  orm?: string,
+  addAuth?: boolean
 ) => {
   await fs.copy(
     path.join(
@@ -54,6 +55,7 @@ const moveServerIndex = async (
       'src',
       'index',
       orm ? 'with-orm' : '',
+      addAuth ? 'with-auth' : '',
       `${framework}.ts`
     ),
     path.join(location, 'src', 'index.ts')
