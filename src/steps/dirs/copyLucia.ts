@@ -17,6 +17,7 @@ export const copyLucia = async (answers: Answers, absolutePath: string) => {
     return;
 
   const type = map[database];
+  const remoteAuthDir = path.join(absolutePath, 'src', 'auth');
 
   await fs.copy(
     path.join(routesDir, `${serverFramework}-auth.ts`),
@@ -26,12 +27,17 @@ export const copyLucia = async (answers: Answers, absolutePath: string) => {
   if (orm === 'drizzle') {
     await fs.copy(
       path.join(luciaDir, 'drizzle', `index.${type}.ts`),
-      path.join(absolutePath, 'src', 'auth', 'index.ts')
+      path.join(remoteAuthDir, 'index.ts')
     );
   } else {
     await fs.copy(
       path.join(luciaDir, 'prisma', `index.ts`),
-      path.join(absolutePath, 'src', 'auth', 'index.ts')
+      path.join(remoteAuthDir, 'index.ts')
     );
   }
+
+  await fs.copy(
+    path.join(luciaDir, 'utils.ts'),
+    path.join(remoteAuthDir, 'utils.ts')
+  );
 };

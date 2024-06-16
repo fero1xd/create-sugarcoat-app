@@ -1,6 +1,6 @@
 import express from 'express';
 import { getAllUsers } from './db/operations';
-import { createAuthRoutes } from '../routes';
+import { createAuthRoutes } from './routes';
 
 const app = express();
 

@@ -60,7 +60,7 @@ const dependenciesMap = {
     hono: ['hono', '@hono/node-server'],
   },
   lucia: {
-    base: ['lucia'],
+    base: ['lucia', 'oslo'],
     drizzle: ['@lucia-auth/adapter-drizzle'],
     prisma: ['@lucia-auth/adapter-prisma'],
     typeorm: [],
