@@ -1,11 +1,11 @@
 {
-  "name": "create-modern-backend",
-  "version": "1.0.0",
+  "name": "create-sugarcoat-app",
+  "version": "0.0.1",
   "description": "",
   "exports": "./dist/bin.js",
   "type": "module",
   "bin": {
-    "sugarcoat": "./dist/bin.js"
+    "create-sugarcoat-app": "./dist/bin.js"
   },
   "scripts": {
     "build": "esbuild --bundle src/index.ts --outfile=dist/bin.js --packages=external --format=esm --target=esnext",

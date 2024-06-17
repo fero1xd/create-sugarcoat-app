@@ -35,7 +35,7 @@ export const copyLucia = async (answers: Answers, absolutePath: string) => {
     );
   } else {
     await fs.copy(
-      path.join(luciaDir, 'prisma', `index.ts`),
+      path.join(luciaDir, 'prismaa', `index.ts`),
       path.join(remoteAuthDir, 'index.ts')
     );
   }
