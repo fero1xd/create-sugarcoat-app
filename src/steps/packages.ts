@@ -96,10 +96,14 @@ export const addDependencies = async (answers: Answers) => {
     deps.add(d)
   );
 
-  const { orm, database, includeDatabase, includeLucia } = answers;
+  const { orm, database, includeDatabase, includeLucia, packageManager } =
+    answers;
   const location = getAbsolute(answers.location);
 
-  if (!includeDatabase || !orm || !database) return;
+  if (!includeDatabase || !orm || !database) {
+    await installPackages(location, packageManager, ...Array.from(deps));
+    return;
+  }
 
   const ormDeps = dependenciesMap.orm[orm];
 
@@ -111,5 +115,5 @@ export const addDependencies = async (answers: Answers) => {
     dependenciesMap.lucia[orm].forEach((d) => deps.add(d));
   }
 
-  await installPackages(location, answers.packageManager, ...Array.from(deps));
+  await installPackages(location, packageManager, ...Array.from(deps));
 };

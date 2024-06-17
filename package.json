@@ -1,11 +1,11 @@
 {
   "name": "create-sugarcoat-app",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "",
   "exports": "./dist/bin.js",
   "type": "module",
   "bin": {
-    "create-sugarcoat-app": "./dist/bin.js"
+    "create-sugarcoat-app": "dist/bin.js"
   },
   "scripts": {
     "build": "esbuild --bundle src/index.ts --outfile=dist/bin.js --packages=external --format=esm --target=esnext",

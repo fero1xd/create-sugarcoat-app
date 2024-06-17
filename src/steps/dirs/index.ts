@@ -20,9 +20,9 @@ export const createProjectDir = async (answers: Answers) => {
     }
   }
 
-  await fs.copy(path.resolve('template', 'common'), absolutePath);
+  await fs.copy(path.join(TEMPLATE_DIR, 'common'), absolutePath);
 
-  moveServerIndex(answers, absolutePath);
+  await moveServerIndex(answers, absolutePath);
   await copyDatabaseDir(answers, absolutePath);
   await copyLucia(answers, absolutePath);
 

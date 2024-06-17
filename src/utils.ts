@@ -2,8 +2,13 @@ import { getNpmVersion, type PM } from 'detect-package-manager';
 import { readFileSync } from 'fs';
 import gradient from 'gradient-string';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-export const art = readFileSync(path.resolve('resources', 'art.txt'), {
+export const PKG_ROOT = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../'
+);
+export const art = readFileSync(path.join(PKG_ROOT, 'resources', 'art.txt'), {
   encoding: 'utf-8',
 });
 
@@ -28,7 +33,7 @@ export const getPackageManagers = async () => {
   return available;
 };
 
-export const TEMPLATE_DIR = path.resolve('template');
+export const TEMPLATE_DIR = path.join(PKG_ROOT, 'template');
 
 export type DatabaseProviders =
   | 'neon'
