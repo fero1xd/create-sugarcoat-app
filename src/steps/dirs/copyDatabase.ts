@@ -5,7 +5,7 @@ import {
   drizzleDir,
   prismaDir,
   typeormDir,
-  type AvailableOrm,
+  type Answers,
   type DatabaseProviders,
 } from '../../utils';
 
@@ -37,16 +37,22 @@ const scriptsMap = {
 };
 
 export const copyDatabaseDir = async (
-  dbProvider: DatabaseProviders,
-  orm: AvailableOrm,
-  location: string,
-  addAuth: boolean
+  answers: Answers,
+  absolutePath: string
 ) => {
+  const { database: dbProvider, orm, includeLucia, includeDatabase } = answers;
+
+  if (!includeDatabase) return;
+
+  // Just to make typescript happy
+  if (!orm || !dbProvider) return;
+
+  const addAuth = includeLucia || false;
   const type = map[dbProvider];
   if (!type) {
     return console.log('nothing found for', dbProvider);
   }
-  const newDbDir = path.join(location, 'src', 'db');
+  const newDbDir = path.join(absolutePath, 'src', 'db');
 
   const dbFile = path.join(newDbDir, 'index.ts');
   const opsFile = path.join(newDbDir, 'operations.ts');
@@ -66,7 +72,7 @@ export const copyDatabaseDir = async (
     // Copies schema
     await fs.copy(
       path.join(prismaDir, `schema.${type}${addAuth ? '-auth' : ''}.prisma`),
-      path.join(location, 'prisma', 'schema.prisma')
+      path.join(absolutePath, 'prisma', 'schema.prisma')
     );
 
     // Copies db connection
@@ -90,12 +96,12 @@ export const copyDatabaseDir = async (
     if (dbProvider !== 'turso') {
       await fs.copy(
         path.join(dbDir, 'config', `drizzle.config.${type}.ts`),
-        path.join(location, 'drizzle.config.ts')
+        path.join(absolutePath, 'drizzle.config.ts')
       );
     } else {
       await fs.copy(
         path.join(dbDir, 'config', `drizzle.config.turso.ts`),
-        path.join(location, 'drizzle.config.ts')
+        path.join(absolutePath, 'drizzle.config.ts')
       );
     }
   } else if (orm === 'typeorm') {
@@ -112,9 +118,10 @@ export const copyDatabaseDir = async (
 
   if (orm === 'typeorm') return;
 
+  // Copies scripts related to specific libraries
   const scripts = scriptsMap[orm];
   const packageJson = await fs.readJSONSync(
-    path.join(location, 'package.json')
+    path.join(absolutePath, 'package.json')
   );
   const prevScripts = packageJson.scripts as Record<string, string>;
 
@@ -123,7 +130,7 @@ export const copyDatabaseDir = async (
     ...scripts,
   };
 
-  await fs.writeJsonSync(path.join(location, 'package.json'), packageJson, {
+  await fs.writeJsonSync(path.join(absolutePath, 'package.json'), packageJson, {
     spaces: 2,
   });
 };

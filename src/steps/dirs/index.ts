@@ -6,14 +6,7 @@ import { copyDatabaseDir } from './copyDatabase';
 import { copyLucia } from './copyLucia';
 
 export const createProjectDir = async (answers: Answers) => {
-  const {
-    location,
-    serverFramework,
-    orm,
-    database,
-    includeDatabase,
-    includeLucia,
-  } = answers;
+  const { location } = answers;
 
   const absolutePath = getAbsolute(location);
 
@@ -29,25 +22,15 @@ export const createProjectDir = async (answers: Answers) => {
 
   await fs.copy(path.resolve('template', 'common'), absolutePath);
 
-  // copies main index file
-  moveServerIndex(serverFramework, absolutePath, orm, includeLucia || false);
-
-  // Add database Support
-  if (orm && includeDatabase && database) {
-    await copyDatabaseDir(database, orm, absolutePath, includeLucia || false);
-  }
-
+  moveServerIndex(answers, absolutePath);
+  await copyDatabaseDir(answers, absolutePath);
   await copyLucia(answers, absolutePath);
 
   loader.stop('Successfuly created backend');
 };
 
-const moveServerIndex = async (
-  framework: 'express' | 'hono',
-  location: string,
-  orm?: string,
-  addAuth?: boolean
-) => {
+const moveServerIndex = async (answers: Answers, absolutePath: string) => {
+  const { orm, includeLucia, serverFramework } = answers;
   await fs.copy(
     path.join(
       TEMPLATE_DIR,
@@ -55,9 +38,9 @@ const moveServerIndex = async (
       'src',
       'index',
       orm ? 'with-orm' : '',
-      addAuth ? 'with-auth' : '',
-      `${framework}.ts`
+      includeLucia || false ? 'with-auth' : '',
+      `${serverFramework}.ts`
     ),
-    path.join(location, 'src', 'index.ts')
+    path.join(absolutePath, 'src', 'index.ts')
   );
 };

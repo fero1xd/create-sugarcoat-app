@@ -2,7 +2,12 @@ import { prisma } from '.';
 import { type Prisma } from '@prisma/client';
 
 export const getAllUsers = async () => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
   return users;
 };
 

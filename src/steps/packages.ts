@@ -56,8 +56,8 @@ const installPackages = async (location: string, pm: PM, ...args: string[]) => {
 
 const dependenciesMap = {
   serverFramework: {
-    express: ['express', '@types/express'],
-    hono: ['hono', '@hono/node-server'],
+    express: ['dotenv', 'express', '@types/express'],
+    hono: ['hono', 'dotenv', '@hono/node-server'],
   },
   lucia: {
     base: ['lucia', 'oslo'],
@@ -85,6 +85,7 @@ const dependenciesMap = {
       supabase: ['pg'],
       planetscale: ['mysql'],
     },
+    /* eslint-disable */
   } as Record<AvailableOrm, Record<'base' | (string & {}), string[]>>,
 };
 

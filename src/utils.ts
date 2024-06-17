@@ -20,7 +20,9 @@ export const getPackageManagers = async () => {
     try {
       await getNpmVersion(manager);
       available.push(manager);
-    } catch {}
+    } catch {
+      /* empty */
+    }
   }
 
   return available;
@@ -37,7 +39,7 @@ export type DatabaseProviders =
 
 export type AvailableOrm = 'typeorm' | 'prisma' | 'drizzle';
 
-export type Answers = {
+export interface Answers {
   location: string;
   packageManager: PM;
   serverFramework: 'express' | 'hono';
@@ -45,7 +47,7 @@ export type Answers = {
   database: DatabaseProviders | undefined;
   orm: AvailableOrm | undefined;
   includeLucia: boolean | undefined;
-};
+}
 
 export const dbDir = path.join(TEMPLATE_DIR, 'extras', 'src', 'db');
 export const prismaDir = path.join(dbDir, 'prisma');

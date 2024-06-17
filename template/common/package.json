@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "build": "esbuild --bundle src/index.ts --outfile=dist/bin.js --packages=external --platform=node"
+    "build": "esbuild --bundle src/index.ts --outfile=dist/index.js --packages=external --platform=node --format=esm"
   },
   "keywords": [],
   "author": "",

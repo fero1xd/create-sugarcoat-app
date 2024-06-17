@@ -16,6 +16,7 @@ const main = async () => {
 
   await addDependencies(answers);
 
-  outro(chalk.hex('#dd2476')('Thank you for using create-modern-app'));
+  outro(chalk.hex('#dd2476')('Thank you for using sugarcoat'));
 };
+
 main();

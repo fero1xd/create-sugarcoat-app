@@ -3,9 +3,15 @@ import { createUser, getUser } from '../db/operations';
 import { Argon2id } from 'oslo/password';
 import { createSessionAndCookie } from '../auth/utils';
 import { setCookie } from 'hono/cookie';
+import { authMiddleware } from '../middlewares/auth';
+import type { User } from 'lucia';
 
 export const createAuthRoutes = () => {
-  const hono = new Hono();
+  const hono = new Hono<{
+    Variables: {
+      user: User | null;
+    };
+  }>();
 
   hono.post('/register', async (c) => {
     const { name, email, age, password } = await c.req.json();
@@ -37,7 +43,7 @@ export const createAuthRoutes = () => {
       return c.json({ message: 'invalid credentials' });
     }
 
-    const cookie = await createSessionAndCookie(user.id, user.name);
+    const cookie = await createSessionAndCookie(user.id);
 
     setCookie(c, cookie.name, cookie.value, cookie.attributes);
 
@@ -45,6 +51,9 @@ export const createAuthRoutes = () => {
       message: 'Success',
     });
   });
+
+  hono.use(authMiddleware);
+  hono.get('/me', (c) => c.json({ user: c.get('user') }));
 
   return hono;
 };

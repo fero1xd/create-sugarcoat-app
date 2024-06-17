@@ -1,6 +1,5 @@
 import * as p from '@clack/prompts';
 import { getPackageManagers, type Answers } from './utils';
-import type { PM } from 'detect-package-manager';
 
 export const runQuestioneer = async () => {
   const pms = await getPackageManagers();

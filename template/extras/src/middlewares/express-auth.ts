@@ -29,7 +29,6 @@ export const authMiddleware: RequestHandler = async (req, res, next) => {
     });
   }
 
-  res.locals.session = session;
   res.locals.user = user;
 
   return next();

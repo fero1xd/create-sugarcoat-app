@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { createUser, getUser } from '../db/operations';
 import { Argon2id } from 'oslo/password';
 import { createSessionAndCookie } from '../auth/utils';
+import { authMiddleware } from '../middlewares/auth';
+import type { User } from 'lucia';
 
 export const createAuthRoutes = () => {
   const router = Router();
@@ -37,13 +39,17 @@ export const createAuthRoutes = () => {
       return res.json({ message: 'invalid credentials' });
     }
 
-    const cookie = await createSessionAndCookie(user.id, user.name);
+    const cookie = await createSessionAndCookie(user.id);
     res.cookie(cookie.name, cookie.value, cookie.attributes);
 
     return res.json({
       message: 'Success',
     });
   });
+
+  router.use(authMiddleware);
+
+  router.get('/me', (_req, res) => res.json({ me: res.locals.user }));
 
   return router;
 };

@@ -23,6 +23,10 @@ export const copyLucia = async (answers: Answers, absolutePath: string) => {
     path.join(routesDir, `${serverFramework}-auth.ts`),
     path.join(absolutePath, 'src', 'routes', 'index.ts')
   );
+  await fs.copy(
+    path.join(routesDir, '..', 'middlewares', `${serverFramework}-auth.ts`),
+    path.join(absolutePath, 'src', 'middlewares', 'auth.ts')
+  );
 
   if (orm === 'drizzle') {
     await fs.copy(

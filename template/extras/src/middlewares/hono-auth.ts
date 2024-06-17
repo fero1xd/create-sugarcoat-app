@@ -28,7 +28,6 @@ export const authMiddleware = async (c, next) => {
     });
   }
   c.set('user', user);
-  c.set('session', session);
 
   return next();
 };
