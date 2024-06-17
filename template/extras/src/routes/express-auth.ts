@@ -3,7 +3,6 @@ import { createUser, getUser } from '../db/operations';
 import { Argon2id } from 'oslo/password';
 import { createSessionAndCookie } from '../auth/utils';
 import { authMiddleware } from '../middlewares/auth';
-import type { User } from 'lucia';
 
 export const createAuthRoutes = () => {
   const router = Router();
