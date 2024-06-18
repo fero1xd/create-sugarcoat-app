@@ -1,5 +1,11 @@
 # create-sugarcoat-app
 
+## 0.0.5
+
+### Patch Changes
+
+- Fixed prisma folder name
+
 ## 0.0.4
 
 ### Patch Changes

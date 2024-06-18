@@ -11,11 +11,14 @@ const main = async () => {
   renderTitle();
   const answers = await runQuestioneer();
 
-  // Copies common files
-  await createProjectDir(answers);
+  try {
+    // Copies common files
+    await createProjectDir(answers);
 
-  await addDependencies(answers);
-
+    await addDependencies(answers);
+  } catch (e) {
+    console.log(e);
+  }
   outro(chalk.hex('#dd2476')('Thank you for using sugarcoat'));
 };
 
