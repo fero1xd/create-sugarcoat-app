@@ -1,5 +1,11 @@
 # create-sugarcoat-app
 
+## 0.0.6
+
+### Patch Changes
+
+- Added readme
+
 ## 0.0.5
 
 ### Patch Changes

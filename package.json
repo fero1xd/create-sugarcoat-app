@@ -1,6 +1,6 @@
 {
   "name": "create-sugarcoat-app",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "exports": "./dist/bin.js",
   "type": "module",

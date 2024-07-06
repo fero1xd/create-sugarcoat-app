@@ -1,5 +1,7 @@
 ### Create Sugarcoat App
 
+![Demo](https://utfs.io/f/d171d93f-4169-4557-a399-e276c77b282a-1v0sh1.gif)
+
 #### Overview
 
 `create-sugarcoat-app` is a command-line tool designed to swiftly scaffold a modern backend API using TypeScript. It aims to minimize setup time and streamline the initial configuration process, allowing developers to focus more on building robust applications.
