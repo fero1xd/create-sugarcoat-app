@@ -14,7 +14,7 @@ export default function Home() {
               <h1 className='z-[5] relative !mb-0 !font-extrabold leading-tight sm:leading-tight lg:leading-relaxed text-transparent bg-clip-text  from-blue-500 via-teal-500 to-pink-500 bg-gradient-to-r'>
                 create-sugarcoat-app
               </h1>
-              <h1 className='blur-xl absolute inset-0 mb-0 !font-bold leading-tight sm:leading-tight lg:leading-relaxed text-transparent bg-clip-text  from-blue-500 via-teal-500 to-pink-500   bg-gradient-to-r'>
+              <h1 className='blur-xl select-none absolute -inset-2 mb-0 !font-bold leading-tight sm:leading-tight lg:leading-relaxed text-transparent bg-clip-text  from-blue-500 via-teal-500 to-pink-500   bg-gradient-to-r'>
                 create-sugarcoat-app
               </h1>
             </Balancer>
