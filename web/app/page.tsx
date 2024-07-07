@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <Main className='min-h-screen'>
-      <Section className='!pb-0 !pt-40'>
+      <Section className='!pb-0 lg:!pt-40 md:!pt-32'>
         <Container className='text-center'>
           <div className='relative group overflow-visible mb-5 lg:mb-0 md:mb-0'>
             <Balancer>
