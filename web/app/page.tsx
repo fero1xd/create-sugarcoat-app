@@ -58,7 +58,7 @@ export default function Home() {
         </Article>
 
         <div className='max-w-sm lg:max-w-7xl w-full mx-auto logos group relative overflow-hidden whitespace-nowrap py-10 [mask-image:_linear-gradient(to_right,_transparent_0,_white_128px,white_calc(100%-128px),_transparent_100%)]'>
-          {[1, 2].map((i) => (
+          {[1, 2, 3].map((i) => (
             <div
               className='animate-slide-left group-hover:animation-pause inline-block w-max'
               key={i}
