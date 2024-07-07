@@ -8,6 +8,6 @@ export default tseslint.config(
   ...tseslint.configs.strict,
   ...tseslint.configs.stylistic,
   {
-    ignores: ['dist/bin.js', 'template'],
+    ignores: ['dist/bin.js', 'template', 'web'],
   }
 );
