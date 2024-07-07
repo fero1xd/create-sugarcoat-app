@@ -7,14 +7,14 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <Main className='min-h-screen'>
-      <Section className='!pb-0 lg:!pt-40 md:!pt-32'>
+      <Section className='!pb-0 pt-40 lg:!pt-40 md:!pt-32'>
         <Container className='text-center'>
           <div className='relative group overflow-visible mb-5 lg:mb-0 md:mb-0'>
             <Balancer>
               <h1 className='z-[5] relative !mb-0 !font-extrabold leading-tight sm:leading-tight lg:leading-relaxed text-transparent bg-clip-text  from-blue-500 via-teal-500 to-pink-500 bg-gradient-to-r'>
                 create-sugarcoat-app
               </h1>
-              <h1 className='blur-xl select-none absolute -inset-2 mb-0 !font-bold leading-tight sm:leading-tight lg:leading-relaxed text-transparent bg-clip-text  from-blue-500 via-teal-500 to-pink-500   bg-gradient-to-r'>
+              <h1 className='blur-xl select-none absolute inset-0 mb-0 !font-bold leading-tight sm:leading-tight lg:leading-relaxed text-transparent bg-clip-text  from-blue-500 via-teal-500 to-pink-500   bg-gradient-to-r'>
                 create-sugarcoat-app
               </h1>
             </Balancer>
